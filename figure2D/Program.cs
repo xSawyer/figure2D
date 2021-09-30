@@ -15,9 +15,11 @@ namespace figure2D
             Form myForm;
             Bitmap btmp;
             Graphics grphcs;
+            btmp = new Bitmap(800, 400);
+
+            /*---------------Dessin des lignes--------------------*/
 
             Ligne ligne1, ligne2, ligne3, ligne4, ligne5;
-            btmp = new Bitmap(800, 400);
 
             ligne1 = new Ligne(20, 20, 100, 20, 100, 100, 100);
             ligne2 = new Ligne(100, 20, 100, 100, 100, 100, 100);
@@ -39,6 +41,18 @@ namespace figure2D
             ligne1.Dessiner(grphcs);
             ligne1.Rotation(50);
             ligne1.Dessiner(grphcs);*/
+
+
+            /*------------Dessin des ellipses-----------------*/
+            
+            Ellipse ell1, ell2;
+
+            ell1 = new Ellipse(100, 130, 0, 0, 0);
+            ell2 = new Ellipse(100, 150, 0, 0, 0);
+            ell1.Translation(10, 10);
+            ell2.Rotation(-25);
+            ell1.Dessiner(grphcs);
+            ell2.Dessiner(grphcs);
 
 
             myForm = new Form();
@@ -76,7 +90,7 @@ namespace figure2D
             angle = angle + alpha;
         }
 
-        //virtual signifie qu'on peut surcharger cette méthode dans un enfant
+        //Virtual signifie qu'on peut surcharger cette méthode dans un enfant
         public virtual void Translation(int x, int y)
         {
             centre.X += x;
@@ -87,9 +101,9 @@ namespace figure2D
 
     class Ligne : Figure2D
     {
-
+        //Champs
         private Point A, B;
-        
+  
         //Constructeur
         public Ligne(int xA, int yA, int xB, int yB, int rouge, int vert, int bleu) : base(rouge,vert,bleu)
         {
@@ -110,7 +124,7 @@ namespace figure2D
 
         }
 
-        //override signifie qu'on surcharge la méthode Translation
+        //override signifie qu'on surcharge la méthode "Translation"
         public override void Translation(int x, int y)
         {
             A.X += x;
@@ -134,8 +148,30 @@ namespace figure2D
 
             Translation(mX, mY);
         }
-
-
     }
 
+    class Ellipse : Figure2D
+    {
+        public int r1, r2;
+
+        public Ellipse(int r1, int r2, int rouge, int vert, int bleu) : base(rouge, vert, bleu)
+        {
+            this.r1 = r1;
+            this.r2 = r2;
+        }
+
+        public void Dessiner(Graphics grphcs)
+        {
+            grphcs.RotateTransform(angle);
+            Pen pen = new Pen(Color.FromArgb(r, v, b));
+            pen.Width = epaisseur;
+            grphcs.DrawEllipse(pen, centre.X, centre.Y, r1, r2);
+        }
+
+        public void Echelle(double coeff)
+        {
+            r1 = (int)(r1 * coeff);
+            r2 = (int)(r2 * coeff);
+        }
+    }
 }
