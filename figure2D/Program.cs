@@ -87,7 +87,7 @@ namespace figure2D
         }
         public void Rotation(int alpha)
         {
-            angle = angle + alpha;
+            this.angle = this.angle + alpha;
         }
 
         //Virtual signifie qu'on peut surcharger cette méthode dans un enfant
@@ -173,5 +173,21 @@ namespace figure2D
             r1 = (int)(r1 * coeff);
             r2 = (int)(r2 * coeff);
         }
+    }
+
+    class Quadrilatère : Figure2D
+    {
+        Ligne l1, l2, l3, l4;
+        Point A, B, C, D;
+
+        public Quadrilatère(int rouge, int vert, int bleu) : base(rouge,vert, bleu)
+        {
+            //Valeur des points
+        }
+
+        //Class à réaliser pour le 26/10/2021
+
+
+
     }
 }
