@@ -12,7 +12,44 @@ namespace figure2D
         
         static void Main()
         {
-            
+            Form myForm;
+            Bitmap btmp;
+            Graphics grphcs;
+
+            Ligne ligne1, ligne2, ligne3, ligne4, ligne5;
+            btmp = new Bitmap(800, 400);
+
+            ligne1 = new Ligne(20, 20, 100, 20, 100, 100, 100);
+            ligne2 = new Ligne(100, 20, 100, 100, 100, 100, 100);
+            ligne3 = new Ligne(100, 100, 20, 100, 100, 100, 100);
+            ligne4 = new Ligne(20, 100, 20, 20, 100, 100, 100);
+            ligne5 = new Ligne(20, 100, 100, 20, 255, 0, 0);
+
+            grphcs = Graphics.FromImage(btmp);
+
+            ligne1.Dessiner(grphcs);
+            ligne2.Dessiner(grphcs);
+            ligne3.Dessiner(grphcs);
+            ligne4.Dessiner(grphcs);
+            ligne5.Dessiner(grphcs);
+
+            ligne4.ChangeCouleur(0, 255, 0);
+            ligne4.Dessiner(grphcs);
+            /*ligne1.Translation(20, 20);
+            ligne1.Dessiner(grphcs);
+            ligne1.Rotation(50);
+            ligne1.Dessiner(grphcs);*/
+
+
+            myForm = new Form();
+            myForm.Text = "CNAM Licence Cyber-Sécurité 2021-2022";
+            myForm.BackColor = Color.FromArgb(255, 255, 255);
+            myForm.ClientSize = btmp.Size;
+            myForm.BackgroundImage = btmp;
+            myForm.Cursor = Cursors.Cross;
+            myForm.ShowDialog();
+            myForm.Dispose();
+
         }
     }
 
@@ -39,7 +76,8 @@ namespace figure2D
             angle = angle + alpha;
         }
 
-        public void translation(int x, int y)
+        //virtual signifie qu'on peut surcharger cette méthode dans un enfant
+        public virtual void Translation(int x, int y)
         {
             centre.X += x;
             centre.Y += y;
@@ -72,10 +110,29 @@ namespace figure2D
 
         }
 
-        public void translation(int x, int y)
+        //override signifie qu'on surcharge la méthode Translation
+        public override void Translation(int x, int y)
         {
-            centre.X += x;
-            centre.Y += y;
+            A.X += x;
+            A.Y += y;
+            B.X += x;
+            B.Y += y;
+        }
+
+        public void Echelle(double coeff)
+        {
+            int mX, mY;
+            mX = ((A.X + B.X) / 2);
+            mY = ((A.Y + B.Y) / 2);
+
+            Translation(-mX, -mY);
+
+            A.X = (int)(A.X * coeff);
+            A.Y = (int)(A.Y * coeff);
+            B.X = (int)(B.X * coeff);
+            B.Y = (int)(B.Y * coeff);
+
+            Translation(mX, mY);
         }
 
 
