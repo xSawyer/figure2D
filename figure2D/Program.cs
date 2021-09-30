@@ -19,8 +19,9 @@ namespace figure2D
     class Figure2D
     {
         //Champs
-        Point centre;
-        private int angle, r, v, b, epaisseur;
+        //protected : accessible dans les classes enfants
+        protected Point centre;       
+        protected int angle, r, v, b, epaisseur;
 
         //Constructeur
         public Figure2D(int rouge, int vert, int bleu)
@@ -37,13 +38,45 @@ namespace figure2D
         {
             angle = angle + alpha;
         }
+
+        public void translation(int x, int y)
+        {
+            centre.X += x;
+            centre.Y += y;
+        }
     }
 
 
     class Ligne : Figure2D
     {
-        
 
+        private Point A, B;
+        
+        //Constructeur
+        public Ligne(int xA, int yA, int xB, int yB, int rouge, int vert, int bleu) : base(rouge,vert,bleu)
+        {
+
+            //xA, yA coordonnée de l'origine
+            //xB, yB corrdonnée de l'extrémité
+            A.X = xA;
+            A.Y = yA;
+            B.X = xB;
+            B.Y = yB;
+        }
+        public void Dessiner(Graphics grphcs)
+        {
+            grphcs.RotateTransform(angle);
+            Pen pen = new Pen(Color.FromArgb(r, v, b));
+            pen.Width = epaisseur;
+            grphcs.DrawLine(pen, A, B);
+
+        }
+
+        public void translation(int x, int y)
+        {
+            centre.X += x;
+            centre.Y += y;
+        }
 
 
     }
