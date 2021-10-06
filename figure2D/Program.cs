@@ -16,18 +16,18 @@ namespace figure2D
             Bitmap btmp;
             Graphics grphcs;
             btmp = new Bitmap(800, 400);
+            grphcs = Graphics.FromImage(btmp);
 
-            /*---------------Dessin des lignes--------------------*/
+            /*---------------Dessin des lignes------------------*/
 
             Ligne ligne1, ligne2, ligne3, ligne4, ligne5;
 
             ligne1 = new Ligne(20, 20, 100, 20, 100, 100, 100);
+
             ligne2 = new Ligne(100, 20, 100, 100, 100, 100, 100);
             ligne3 = new Ligne(100, 100, 20, 100, 100, 100, 100);
             ligne4 = new Ligne(20, 100, 20, 20, 100, 100, 100);
             ligne5 = new Ligne(20, 100, 100, 20, 255, 0, 0);
-
-            grphcs = Graphics.FromImage(btmp);
 
             ligne1.Dessiner(grphcs);
             ligne2.Dessiner(grphcs);
@@ -37,6 +37,8 @@ namespace figure2D
 
             ligne4.ChangeCouleur(0, 255, 0);
             ligne4.Dessiner(grphcs);
+
+            
             /*ligne1.Translation(20, 20);
             ligne1.Dessiner(grphcs);
             ligne1.Rotation(50);
@@ -44,16 +46,25 @@ namespace figure2D
 
 
             /*------------Dessin des ellipses-----------------*/
-            
+
             Ellipse ell1, ell2;
 
             ell1 = new Ellipse(100, 130, 0, 0, 0);
             ell2 = new Ellipse(100, 150, 0, 0, 0);
             ell1.Translation(10, 10);
-            ell2.Rotation(-25);
+            //ell2.Rotation(-25); 
             ell1.Dessiner(grphcs);
             ell2.Dessiner(grphcs);
 
+
+            /*-----------Dessin des Quadrilatères------------*/
+
+            Quadrilatère quadri;
+            quadri = new Quadrilatère(50, 50, 200, 50, 150, 150, 50, 150, 0, 255, 0);
+            quadri.dessiner(grphcs);
+
+
+            /*---------------Windows Form-------------------*/
 
             myForm = new Form();
             myForm.Text = "CNAM Licence Cyber-Sécurité 2021-2022";
@@ -63,7 +74,6 @@ namespace figure2D
             myForm.Cursor = Cursors.Cross;
             myForm.ShowDialog();
             myForm.Dispose();
-
         }
     }
 
@@ -179,14 +189,40 @@ namespace figure2D
     {
         Ligne l1, l2, l3, l4;
         Point A, B, C, D;
+       
 
-        public Quadrilatère(int rouge, int vert, int bleu) : base(rouge,vert, bleu)
+        public Quadrilatère(int xA, int yA, int xB, int yB,
+            int xC, int yC, int xD, int yD, int rouge, int vert, int bleu) : base(rouge,vert, bleu)
         {
             //Valeur des points
+            A.X = xA;
+            A.Y = yA;
+            B.X = xB;
+            B.Y = yB;
+            C.X = xC;
+            C.Y = yC;
+            D.X = xD;
+            D.Y = yD;
+
+            l1 = new Ligne(xA, yA, xB, yB, r, v, b);
+            l2 = new Ligne(xB, yB, xC, yC, r, v, b);
+            l3 = new Ligne(xC, yC, xD, yD, r, v, b);
+            l4 = new Ligne(xD, yD, xA, yA, r, v, b);
+
         }
 
-        //Class à réaliser pour le 26/10/2021
+        public void dessiner(Graphics grphcs)
+        {
+            grphcs.RotateTransform(angle);
+            Pen pen = new Pen(Color.FromArgb(r, v, b));
+            pen.Width = epaisseur;
 
+            grphcs.DrawLine(pen, A, B);
+            grphcs.DrawLine(pen, B, C);
+            grphcs.DrawLine(pen, C, D);
+            grphcs.DrawLine(pen, D, A);
+
+        }
 
 
     }
